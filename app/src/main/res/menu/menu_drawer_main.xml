@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_books"
+            android:title="@string/books_articles"/>
+        <item
+            android:id="@+id/nav_health"
+            android:title="@string/health_articles"/>
+        <item
+            android:id="@+id/nav_movies"
+            android:title="@string/movie_articles"/>
+        <item
+            android:id="@+id/nav_science"
+            android:title="@string/science_articles"/>
+        <item
+            android:id="@+id/nav_tech"
+            android:title="@string/tech_articles"/>
+        <item
+            android:id="@+id/nav_travel"
+            android:title="@string/travel_articles"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_help"
+            android:title="@string/help"/>
+        <item
+            android:id="@+id/nav_about"
+            android:title="@string/about"/>
+    </group>
+
+</menu>

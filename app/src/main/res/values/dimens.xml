@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //TextViews
+    <dimen name="size_tab_title">40sp</dimen>
+    <dimen name="padding_tab_title">40dp</dimen>
+    <dimen name="size_title">18sp</dimen>
+    <dimen name="size_synopsis">22sp</dimen>
+
+    //Images
+    <dimen name="size_image_height">35dp</dimen>
+    <dimen name="size_image_width">@dimen/size_image_height</dimen>
+    <dimen name="margin">5dp</dimen>
+    <dimen name="paddding">5dp</dimen>
+
+    //Navigation header
+    <dimen name="nav_header_height">100dp</dimen>
+
+    //Layout size
+    <dimen name="layout_height">60dp</dimen>
+</resources>
