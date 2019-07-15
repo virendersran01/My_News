@@ -1,15 +1,160 @@
 package com.example.my_news.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.example.my_news.R;
+import com.example.my_news.utils.SearchDate;
+import com.example.my_news.utils.Utils;
 
-public class SearchArticlesActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class SearchArticlesActivity extends AppCompatActivity
+        implements View.OnClickListener {
+
+    public final String[] CHECKBOX_VALUES = {"Books", "Health", "Movies", "Science",
+            "Technology", "Travel"};
+    public static final String SEARCH_ARTICLE_VALUES = "SEARCH_ARTICLE_VALUES";
+
+    public String[] CHECKBOX_POSITION = new String[6];
+    @BindView(R.id.query_text_input_layout)
+    public TextInputLayout hintLabel;
+    @BindView(R.id.search_query_term)
+    EditText mSearchQuery;
+    @BindView(R.id.end_date)
+    EditText mEndDate;
+    @BindView(R.id.begin_date)
+    EditText mBeginDate;
+    @BindView(R.id.search_activity_search_button)
+    Button mSearchButton;
+    @BindView(R.id.checkbox_1)
+    CheckBox mCheckBox1;
+    @BindView(R.id.checkbox_2)
+    CheckBox mCheckBox2;
+    @BindView(R.id.checkbox_3)
+    CheckBox mCheckBox3;
+    @BindView(R.id.checkbox_4)
+    CheckBox mCheckBox4;
+    @BindView(R.id.checkbox_5)
+    CheckBox mCheckBox5;
+    @BindView(R.id.checkbox_6)
+    CheckBox mCheckBox6;
+
+    private Utils mUtils = new Utils();
+    private CheckBox[] mCheckboxes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_articles);
+
+        ButterKnife.bind(this);
+        this.mCheckboxes = new CheckBox[]{mCheckBox1, mCheckBox2, mCheckBox3,
+                mCheckBox3, mCheckBox4, mCheckBox5, mCheckBox6};
+
+        this.mSearchButton.setOnClickListener(this);
+        this.configureToolbar();
+        this.configureActivity();
+        this.setSearchDate();
+    }
+
+    private void configureToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void setSearchDate() {
+        SearchDate beginDate = new SearchDate(mBeginDate, this);
+        SearchDate endDate = new SearchDate(mEndDate, this);
+    }
+
+    private void configureActivity() {
+        String[] value = {mSearchQuery.getText().toString(),
+                mUtils.getNewDesk(CHECKBOX_VALUES),
+                mUtils.getBeginDate(mBeginDate.getText().toString()),
+                mUtils.getEndDate(mEndDate.getText().toString())};
+
+        Intent intent = new Intent(getBaseContext(), SearchArticleListActivity.class);
+        intent.putExtra(SEARCH_ARTICLE_VALUES, value);
+        startActivity(intent);
+    }
+
+    public void onCheckboxClicked(View view) {
+        boolean isChecked = ((CheckBox) view).isChecked();
+        CHECKBOX_POSITION[0] = CHECKBOX_VALUES[0];
+        switch (view.getId()) {
+            case R.id.checkbox_1:
+                if (isChecked) {
+                    CHECKBOX_POSITION[0] = CHECKBOX_VALUES[0];
+                } else {
+                    CHECKBOX_VALUES[0] = "";
+                }
+                break;
+            case R.id.checkbox_2:
+                if (isChecked) {
+                    CHECKBOX_POSITION[1] = CHECKBOX_VALUES[1];
+                } else {
+                    CHECKBOX_VALUES[1] = "";
+                }
+                break;
+            case R.id.checkbox_3:
+                if (isChecked) {
+                    CHECKBOX_POSITION[2] = CHECKBOX_VALUES[2];
+                } else {
+                    CHECKBOX_VALUES[2] = "";
+                }
+                break;
+            case R.id.checkbox_4:
+                if (isChecked) {
+                    CHECKBOX_POSITION[3] = CHECKBOX_VALUES[3];
+                } else {
+                    CHECKBOX_VALUES[3] = "";
+                }
+                break;
+            case R.id.checkbox_5:
+                if (isChecked) {
+                    CHECKBOX_POSITION[4] = CHECKBOX_VALUES[4];
+                } else {
+                    CHECKBOX_VALUES[4] = "";
+                }
+                break;
+            case R.id.checkbox_6:
+                if (isChecked) {
+                    CHECKBOX_POSITION[5] = CHECKBOX_VALUES[5];
+                } else {
+                    CHECKBOX_VALUES[5] = "";
+                }
+                break;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Override
+    public void onClick(View v) {
+        mUtils.queryInputIsEmpty(mSearchQuery, hintLabel,
+                getResources().getString(R.string.query_error));
+        //One box, at minimum, must be checked
+        if (mUtils.onUncheckedBoxes(mCheckboxes))
+            mUtils.snackbarMessage(findViewById(R.id.activity_search_article),
+                    R.string.box_unchecked);
+        if (!(mSearchQuery.getText().toString().isEmpty())
+        && !(mUtils.onUncheckedBoxes(mCheckboxes))) {
+            configureActivity();
+        }
     }
 }

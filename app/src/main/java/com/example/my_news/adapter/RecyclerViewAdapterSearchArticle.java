@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.my_news.R;
 import com.example.my_news.model.SearchArticle;
 
@@ -21,9 +21,11 @@ public class RecyclerViewAdapterSearchArticle
 
     private ArrayList<SearchArticle.Docs> mList;
     private OnItemClickListener mListener;
+    private RequestManager mGlide;
 
-    public RecyclerViewAdapterSearchArticle(ArrayList<SearchArticle.Docs> docsList) {
+    public RecyclerViewAdapterSearchArticle(ArrayList<SearchArticle.Docs> docsList, RequestManager glide) {
         mList = docsList;
+        mGlide = glide;
     }
 
     @NonNull
@@ -36,7 +38,7 @@ public class RecyclerViewAdapterSearchArticle
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.updateSearchArticleUI(this.mList.get(position));
+        holder.updateSearchArticleUI(this.mList.get(position), mGlide);
     }
 
     @Override
@@ -81,7 +83,7 @@ public class RecyclerViewAdapterSearchArticle
             });
         }
 
-        public void updateSearchArticleUI(SearchArticle.Docs searchArticle) {
+        public void updateSearchArticleUI(SearchArticle.Docs searchArticle, RequestManager glide) {
 
             mRelativeLayout = mRelativeLayout.findViewById(R.id.item_layout);
             mTextView = mTextView.findViewById(R.id.item_title);
@@ -95,7 +97,7 @@ public class RecyclerViewAdapterSearchArticle
                 this.mSummaryTV.setText(searchArticle.getSnippet());
                 if (searchArticle.getMultimedia() != null &&
                         (!searchArticle.getMultimedia().isEmpty())) {
-                    Glide.with(mContext).load(NYT_URI + searchArticle.getMultimedia()
+                    glide.load(NYT_URI + searchArticle.getMultimedia()
                     .get(0).getUrl()).into(mImageView);
                 }
             }

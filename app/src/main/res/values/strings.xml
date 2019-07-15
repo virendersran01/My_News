@@ -29,6 +29,8 @@
 
     <string name="switch_notification">Enable notifications</string>
     <string name="test_notification">Test notification!</string>
+    <string name="box_unchecked">You must select at least one box!</string>
+
     <string name="search_hint">Search query term</string>
     <string name="checkbox6">Travel</string>
     <string name="checkbox5">Technology</string>
@@ -36,4 +38,9 @@
     <string name="checkbox3">Movies</string>
     <string name="checkbox2">Health</string>
     <string name="checkbox1">Books</string>
+
+    <string name="query_error">You have to edit a query term search!!</string>
+    <string name="begin_date">Begin date</string>
+    <string name="end_date">End date</string>
+    <string name="search_button_text">Search</string>
 </resources>

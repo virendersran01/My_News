@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.my_news.R;
 import com.example.my_news.adapter.ViewPagerAdapter;
+import com.example.my_news.utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity
     //flag to load home fragment when user presses back key
     private boolean loadHomeFragOnBackPressed = true;
     private Handler mHandler;
+
+    private Utils mUtils = new Utils();
 
     public MainActivity() {
     }
@@ -115,13 +118,15 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.nav_help:
-                //Send user to external search engine or just to OC site
+                mUtils.openActivityInWebView("https://openclassrooms.com",
+                        this, WebViewActivity.class);
                 break;
             case R.id.nav_about:
-                //Send user to OC website
+                mUtils.openActivityInWebView("https://www.google.fr",
+                        this, WebViewActivity.class);
                 break;
             default:
-
+                //Do nothing
                 break;
         }
         //Regardless of the action taken by the user, the drawer is closed
