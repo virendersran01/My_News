@@ -1,7 +1,8 @@
 package com.example.my_news.activities;
 
-import android.os.Handler;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -11,10 +12,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,9 +24,6 @@ import com.example.my_news.utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    public static final String NYT_API_KEY =
-            "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-pcRd7UBXGzyAG2aLj6raTyLe6yJJIZF9";
 
     private Toolbar toolbar;
     private ViewPager viewPager;
@@ -54,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     private Handler mHandler;
 
     private Utils mUtils = new Utils();
+    private DrawerLayout mDrawerLayout = findViewById(R.id.drawer_layout);
 
     public MainActivity() {
     }
@@ -68,6 +66,47 @@ public class MainActivity extends AppCompatActivity
         setupViewPagerAndTabs();
         setupDrawerLayout();
         setupNavigationView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.param_notifications:
+                launchNotificationsActivity();
+                return true;
+            case R.id.menu_activity_main_search:
+                launchSearchArticlesActivity();
+                return true;
+            case R.id.param_about:
+                mUtils.openActivityInWebView("https://openclassrooms.com",
+                        this, WebViewActivity.class);
+                return true;
+            case R.id.param_help:
+                mUtils.openActivityInWebView("https://www.google.com",
+                        this, WebViewActivity.class);
+                return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void launchSearchArticlesActivity() {
+        Intent intent = new Intent(MainActivity.this,
+                SearchArticlesActivity.class);
+        this.startActivity(intent);
+    }
+
+    private void launchNotificationsActivity() {
+        Intent intent = new Intent(MainActivity.this,
+                NotificationsActivity.class);
+        this.startActivity(intent);
     }
 
     private void setupToolbar() {
@@ -122,7 +161,7 @@ public class MainActivity extends AppCompatActivity
                         this, WebViewActivity.class);
                 break;
             case R.id.nav_about:
-                mUtils.openActivityInWebView("https://www.google.fr",
+                mUtils.openActivityInWebView("https://www.google.com",
                         this, WebViewActivity.class);
                 break;
             default:

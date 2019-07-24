@@ -12,7 +12,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NewYorkTimesService {
-    String apiKey = "pcRd7UBXGzyAG2aLj6raTyLe6yJJIZF9";
+
     String baseUrl = "https://api.nytimes.com/svc/";
     String SearchArticleFl =
             "fl=web_url,snippet,pub_date,news_desk,multimedia,document_type,type_of_material";

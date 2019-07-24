@@ -251,7 +251,6 @@ public class TopStories {
         public ArrayList<Multimedia> getMultimedia() {
             return multimedia;
         }
-
         public void setMultimedia(ArrayList<Multimedia> multimedia) {
             this.multimedia = multimedia;
         }

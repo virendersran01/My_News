@@ -27,10 +27,14 @@
     <string name="help">Help</string>
     <string name="about">About</string>
 
+    //Notification strings
     <string name="switch_notification">Enable notifications</string>
+    <string name="text_notification">A new article is available!</string>
     <string name="test_notification">Test notification!</string>
-    <string name="box_unchecked">You must select at least one box!</string>
+    <string name="default_notification_channel_id">Default channel</string>
 
+    //Checkbox string values
+    <string name="box_unchecked">You must select at least one box!</string>
     <string name="search_hint">Search query term</string>
     <string name="checkbox6">Travel</string>
     <string name="checkbox5">Technology</string>
@@ -43,4 +47,6 @@
     <string name="begin_date">Begin date</string>
     <string name="end_date">End date</string>
     <string name="search_button_text">Search</string>
+
+    <string name="search">Search</string>
 </resources>

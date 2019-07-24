@@ -23,7 +23,7 @@ public class SharedPreferencesData {
         editor.apply();
     }
 
-    private String loadSharedPrefs(Context context) {
+    public String loadSharedPrefs(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(
                 SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return preferences.getString(SEARCH_ARTICLE_NOTIFICATION_VALUES, null);

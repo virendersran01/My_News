@@ -10,11 +10,9 @@ public class SearchArticle {
     @SerializedName("status")
     @Expose
     private String status;
-
     @SerializedName("response")
     @Expose
-    private String response;
-
+    private Response response;
     @SerializedName("copyright")
     @Expose
     private String copyright;
@@ -27,11 +25,11 @@ public class SearchArticle {
         this.status = status;
     }
 
-    public String getResponse() {
+    public Response getResponse() {
         return response;
     }
 
-    public void setResponse(String response) {
+    public void setResponse(Response response) {
         this.response = response;
     }
 

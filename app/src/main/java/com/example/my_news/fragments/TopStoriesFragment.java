@@ -21,14 +21,13 @@ import com.example.my_news.utils.Utils;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TopStoriesFragment extends Fragment {
-
-    RecyclerView mRecyclerView;
-    SwipeRefreshLayout mRefreshLayout;
 
     String apiKey = "pcRd7UBXGzyAG2aLj6raTyLe6yJJIZF9";
     String baseUrl = "https://api.nytimes.com/svc/";
@@ -41,6 +40,11 @@ public class TopStoriesFragment extends Fragment {
     private TopStories mTopStories = new TopStories();
     private NewYorkTimesService newYorkTimesService =
             NewYorkTimesService.retrofit.create(NewYorkTimesService.class);
+
+    @BindView(R.id.frag_recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.frag_swipe_layout)
+    SwipeRefreshLayout mRefreshLayout;
 
     private RecyclerViewAdapterTopStories mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -61,7 +65,6 @@ public class TopStoriesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -70,6 +73,7 @@ public class TopStoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_top_stories,
                 container, false);
+        ButterKnife.bind(this, rootView);
         if (getArguments() != null) {
             position = getArguments().getInt(KEY_POSITION, -1);
         }

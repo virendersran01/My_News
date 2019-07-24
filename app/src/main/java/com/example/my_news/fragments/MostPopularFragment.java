@@ -21,14 +21,13 @@ import com.example.my_news.utils.Utils;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MostPopularFragment extends Fragment {
-
-    RecyclerView mRecyclerView;
-    SwipeRefreshLayout mRefreshLayout;
 
     String apiKey = "pcRd7UBXGzyAG2aLj6raTyLe6yJJIZF9";
     String baseUrl = "https://api.nytimes.com/svc/";
@@ -42,8 +41,12 @@ public class MostPopularFragment extends Fragment {
     private NewYorkTimesService newYorkTimesService =
             NewYorkTimesService.retrofit.create(NewYorkTimesService.class);
 
+    @BindView(R.id.frag_recycler_view)
+    RecyclerView mRecyclerView;
     private RecyclerViewAdapterMostPopular mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    @BindView(R.id.frag_swipe_layout)
+    SwipeRefreshLayout mRefreshLayout;
     private int position;
 
     public MostPopularFragment() {
@@ -69,11 +72,11 @@ public class MostPopularFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_most_popular,
                 container, false);
+        ButterKnife.bind(this, rootView);
         if (getArguments() != null) {
             position = getArguments().getInt(KEY_POSITION, -1);
         }
 
-        mRecyclerView = rootView.findViewById(R.id.frag_recycler_view);
         this.buildRecyclerView();
         executeHttpRequestWithRetrofit();
         mMostPopularArray = new ArrayList<>();
@@ -121,7 +124,7 @@ public class MostPopularFragment extends Fragment {
 
             @Override
             public void onFailure(Call<MostPopular> call, Throwable t) {
-                Toast.makeText(getContext(), "Error loading reponse!",
+                Toast.makeText(getContext(), "Error loading response!",
                         Toast.LENGTH_LONG).show();
             }
         });
