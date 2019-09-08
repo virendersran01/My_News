@@ -20,6 +20,8 @@ import com.example.my_news.utils.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+//SearchArticlesActivity: displays checkboxes and an EditText to the user to search articles of a specific topic
+//or identify categories of their liking with checkboxes to receive custom notifications
 public class SearchArticlesActivity extends AppCompatActivity
         implements View.OnClickListener {
 
@@ -27,6 +29,7 @@ public class SearchArticlesActivity extends AppCompatActivity
             "Technology", "Travel"};
     public static final String SEARCH_ARTICLE_VALUES = "SEARCH_ARTICLE_VALUES";
 
+    //Defining views to be bound using Butterknife Api
     public String[] CHECKBOX_POSITION = new String[6];
     @BindView(R.id.query_text_input_layout)
     public TextInputLayout hintLabel;
@@ -63,12 +66,15 @@ public class SearchArticlesActivity extends AppCompatActivity
         this.mCheckboxes = new CheckBox[]{mCheckBox1, mCheckBox2, mCheckBox3,
                 mCheckBox3, mCheckBox4, mCheckBox5, mCheckBox6};
 
+        //Configures core UI and functionality of the activity
+        //during onCreate
         this.mSearchButton.setOnClickListener(this);
         this.configureToolbar();
         this.configureActivity();
         this.setSearchDate();
     }
 
+    //Creates instance of the toolbar
     private void configureToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,11 +84,14 @@ public class SearchArticlesActivity extends AppCompatActivity
         }
     }
 
+    //Creates new values to be provided for both the begin / end dates of and article search
     private void setSearchDate() {
         SearchDate beginDate = new SearchDate(mBeginDate, this);
         SearchDate endDate = new SearchDate(mEndDate, this);
     }
 
+    //Provides the values specified by the checkboxes along with a begin / end date to the appropriate
+    //string array and passes them as search criteria when called
     private void configureActivity() {
         String[] value = {mSearchQuery.getText().toString(),
                 mUtils.getNewDesk(CHECKBOX_VALUES),
@@ -94,6 +103,12 @@ public class SearchArticlesActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    private void configureAlarmReceiver(Intent intent) {
+        //TODO: pass string array extra to AlarmReceiver
+    }
+
+    //Detects whether or not a checkbox is clicked when the user interacts with it and
+    //then toggles the corresponding position in its string array
     public void onCheckboxClicked(View view) {
         boolean isChecked = ((CheckBox) view).isChecked();
         CHECKBOX_POSITION[0] = CHECKBOX_VALUES[0];
@@ -143,12 +158,13 @@ public class SearchArticlesActivity extends AppCompatActivity
         }
     }
 
+    //onClick for search button; will not allow search to go through without criteria
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onClick(View v) {
         mUtils.queryInputIsEmpty(mSearchQuery, hintLabel,
                 getResources().getString(R.string.query_error));
-        //One box, at minimum, must be checked
+        //One box, at minimum must be checked
         if (mUtils.onUncheckedBoxes(mCheckboxes))
             mUtils.snackbarMessage(findViewById(R.id.activity_search_article),
                     R.string.box_unchecked);
