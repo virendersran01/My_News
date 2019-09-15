@@ -1,4 +1,4 @@
-package com.example.my_news.adapter;
+package com.example.my_news.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -16,6 +16,7 @@ import com.example.my_news.model.TopStories;
 
 import java.util.ArrayList;
 
+//RecyclerViewAdapterTopStories: respective RecyclerView adapter for the Top Stories section and activity
 public class RecyclerViewAdapterTopStories
         extends RecyclerView.Adapter<RecyclerViewAdapterTopStories.ItemViewHolder> {
 
@@ -23,30 +24,35 @@ public class RecyclerViewAdapterTopStories
     private OnItemClickListener mListener;
     private RequestManager mGlide;
 
+    //Instantiating an empty list for the TopStories articles to be stored in
     public RecyclerViewAdapterTopStories(ArrayList<TopStories.Result> topStoriesResult, RequestManager glide) {
         mTopStoriesResult = topStoriesResult;
         mGlide = glide;
     }
 
+    //onCreate: view is inflated and a new itemViewHolder is returned
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_item, parent, false);
-        return new ItemViewHolder(view, mListener);
+        return new ItemViewHolder(view);
     }
 
+    // Returns itemViewHolders and their position
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         holder.updateTopStoriesUI(this.mTopStoriesResult.get(position), mGlide);
     }
 
+    //Returns RecyclerView item count after checking if the result is null
     @Override
     public int getItemCount() {
         if (mTopStoriesResult == null) return 0;
         else return mTopStoriesResult.size();
     }
 
+    //setting item clickListener
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
@@ -55,34 +61,21 @@ public class RecyclerViewAdapterTopStories
         void onItemClick(int position);
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder
+    //Creating ItemViewHolder class
+    public class ItemViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
         public Context mContext;
 
+        //Casting RecyclerView components to their respective views
         RelativeLayout mRelativeLayout;
         TextView mTextView;
         ImageView mImageView;
         TextView mDateTV;
         TextView mSummaryTV;
 
-        public ItemViewHolder(View itemView,
-                              final OnItemClickListener listener) {
+        public ItemViewHolder(View itemView) {
             super(itemView);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION)
-                            listener.onItemClick(position);
-                    }
-                }
-            });
-        }
-
-        public void updateTopStoriesUI(TopStories.Result result, RequestManager glide) {
 
             mRelativeLayout = mRelativeLayout.findViewById(R.id.item_layout);
             mTextView = mTextView.findViewById(R.id.item_title);
@@ -90,6 +83,22 @@ public class RecyclerViewAdapterTopStories
             mDateTV = mDateTV.findViewById(R.id.item_date);
             mSummaryTV = mSummaryTV.findViewById(R.id.item_summary);
 
+            //Check if the listener is null and return position
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                            mListener.onItemClick(position);
+                    }
+                }
+            });
+        }
+
+        public void updateTopStoriesUI(TopStories.Result result, RequestManager glide) {
+
+            //Updates texts and media of the the RecyclerView items using getters and Glide for media
             this.mTextView.setText(result.getSection());
             this.mDateTV.setText(result.getPublishedDate());
             this.mSummaryTV.setText(result.getTitle());
@@ -100,9 +109,10 @@ public class RecyclerViewAdapterTopStories
             }
         }
 
+
         @Override
         public void onClick(View v) {
-            //Do nothing
+            //Do nothing; empty constructor
         }
     }
 }

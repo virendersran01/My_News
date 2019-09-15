@@ -34,6 +34,8 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+//NotificationsActivity: allows user to turn on/off notification channels based on their
+//saved preferences in the settings page which lists several options of categories
 public class NotificationsActivity extends AppCompatActivity {
 
     private final boolean TEST_MODE = true;
@@ -41,6 +43,7 @@ public class NotificationsActivity extends AppCompatActivity {
             "Technology", "Travel"};
     public String[] CHECKBOX_POSITION = new String[6];
 
+    //Views to be bound using the Butterknife Api
     @BindView(R.id.query_text_input_layout)
     public TextInputLayout hintLabel;
     @BindView(R.id.search_query_term)
@@ -77,6 +80,8 @@ public class NotificationsActivity extends AppCompatActivity {
         this.mCheckboxes = new CheckBox[]{mCheckBox1, mCheckBox2, mCheckBox3,
                 mCheckBox3, mCheckBox4, mCheckBox5, mCheckBox6};
 
+        //Initiate UI components (Toolbar) and core
+        // functionality of the activity when created
         configureToolbar();
         configureAlarmManager(this);
         this.switchButton();
@@ -95,6 +100,7 @@ public class NotificationsActivity extends AppCompatActivity {
         }
     }
 
+    //Configures toolbar just as the rest of the classes do
     private void configureToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,12 +110,15 @@ public class NotificationsActivity extends AppCompatActivity {
         }
     }
 
+    //Creates new instance of AlarmManager and receives any updates through pending intents/broadcasts
     private void configureAlarmManager(Context context) {
         Intent alarmIntent = new Intent(context, AlarmReceiver.class);
         mPendingIntent = PendingIntent.getBroadcast(NotificationsActivity.this,
                 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    //Adding or removing an item from the checkbox string array each time an item in
+    //the activity is checked or unchecked
     public void onCheckboxClicked(View view) {
         boolean isChecked = ((CheckBox) view).isChecked();
         CHECKBOX_POSITION[0] = CHECKBOX_VALUES[0];
@@ -159,6 +168,8 @@ public class NotificationsActivity extends AppCompatActivity {
         }
     }
 
+    //Checks if the corresponding view is checked or not and carries one of following
+    //actions depending on the progression of the logic (checked or unchecked)
     private void switchButton() {
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -202,7 +213,7 @@ public class NotificationsActivity extends AppCompatActivity {
         });
     }
 
-    //Task scheduler for AlarmManager & Notifications
+    //Test version of task scheduler for AlarmManager & Notifications
     private void startTestAlarm() {
         mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         int interval = 90000;
@@ -212,6 +223,7 @@ public class NotificationsActivity extends AppCompatActivity {
         Toast.makeText(this, "Alarm test Set!", Toast.LENGTH_SHORT).show();
     }
 
+    //Officially sets AlarmManager and time for any subsequent methods to be carried out
     private void startAlarm() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 19);
@@ -227,6 +239,7 @@ public class NotificationsActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
+    //Cancels AlarmManager and displays Toast message
     private void stopAlarm() {
         mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         assert mAlarmManager != null;
@@ -235,6 +248,7 @@ public class NotificationsActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
+    //Method to test the notification feature; requires Jelly Bean or above
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void sendTestNotification() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -255,6 +269,7 @@ public class NotificationsActivity extends AppCompatActivity {
                         .setAutoCancel(true);
 
         //Get instance of NotificationManager
+        //First null check on NotificationManager and then creates a notification channel
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -267,10 +282,13 @@ public class NotificationsActivity extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(mChannel);
         }
 
+        //Null check on the NotificationManager; if not null then build the notification and send
         assert mNotificationManager != null;
         mNotificationManager.notify(001, mBuilder.build());
     }
 
+    //Converts search queries from the layout's editText into a string and passes that data
+    //as a query filter and saves the preferences to SharedPrefs
     public void passingData() {
         String[] value = {mSearchQueryTerm.getText().toString(),
                 mUtils.getNewDesk(CHECKBOX_VALUES)};

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+//Top Stories: this class lays out and serializes the results of the Retrofit call to the NYT Top Stories api
 public class TopStories {
 
     @SerializedName("results")
@@ -13,6 +14,13 @@ public class TopStories {
 
     public ArrayList<Result> getResults() {
         return results;
+    }
+
+    @Override
+    public String toString() {
+        return "TopStories{" +
+                "results=" + results +
+                '}';
     }
 
     public void setResults(ArrayList<Result> results) {

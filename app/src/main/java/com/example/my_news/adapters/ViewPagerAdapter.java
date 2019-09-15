@@ -1,4 +1,4 @@
-package com.example.my_news.adapter;
+package com.example.my_news.adapters;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -9,20 +9,24 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.my_news.fragments.MostPopularFragment;
 import com.example.my_news.fragments.TopStoriesFragment;
 
+//ViewPagerAdapter: allows user to swipe left and right on the main page between fragments
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
+    //Instantiating ViewPager using context and FragManager parameters
     public ViewPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
 
+    //Required ViewPager constructor - returns item count of fragments within ViewPager
     @Override
     public int getCount() {
         return 3;
     }
 
+    //Specifies the page title of each ViewPaer
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
@@ -38,6 +42,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    //Depending on the item position returned, this method returns the respective fragment title
     @Override
     public Fragment getItem(int i) {
         if (i == 0) {

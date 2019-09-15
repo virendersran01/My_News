@@ -10,18 +10,21 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+//SearchDate: this class allows the user to select dates for parameters to their article search
 public class SearchDate implements View.OnFocusChangeListener,
         DatePickerDialog.OnDateSetListener {
 
     private EditText editText;
     private Calendar mCalendar;
 
+    //Sets focus and creates a new instance of the calendar api
     public SearchDate(EditText editText, Context context) {
         this.editText = editText;
         this.editText.setOnFocusChangeListener(this);
         mCalendar = Calendar.getInstance();
     }
 
+    //When a date is selected: format the date string correctly and set text
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         //Input string formatting
@@ -35,6 +38,7 @@ public class SearchDate implements View.OnFocusChangeListener,
         editText.setText(simpleDateFormat.format(mCalendar.getTime()));
     }
 
+    //Display newly selected calendar date
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {

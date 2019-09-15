@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+//MostPopular: this class lays out and serializes the results of the Retrofit call to the NYT Most Popular api
 public class MostPopular {
 
     @SerializedName("results")

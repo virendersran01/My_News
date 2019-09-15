@@ -1,4 +1,4 @@
-package com.example.my_news.adapter;
+package com.example.my_news.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -16,6 +16,7 @@ import com.example.my_news.model.MostPopular;
 
 import java.util.ArrayList;
 
+//RecyclerViewAdapterMostPopular: respective RecyclerView adapter for the Most Popular section and activity
 public class RecyclerViewAdapterMostPopular
         extends RecyclerView.Adapter<RecyclerViewAdapterMostPopular.ItemViewHolder> {
 
@@ -23,30 +24,35 @@ public class RecyclerViewAdapterMostPopular
     private OnItemClickListener mListener;
     private RequestManager mGlide;
 
+    //Instantiating an empty list for the MostPopular articles to be stored in
     public RecyclerViewAdapterMostPopular(ArrayList<MostPopular.Result> mostPopularResult, RequestManager glide) {
         mMostPopularResult = mostPopularResult;
         mGlide = glide;
     }
 
+    //onCreate: view is inflated and a new itemViewHolder is returned
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_item, parent, false);
-        return new ItemViewHolder(view, mListener);
+        return new ItemViewHolder(view);
     }
 
+    // Returns itemViewHolders and their position
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         holder.updateMostPopularUI(this.mMostPopularResult.get(position), mGlide);
     }
 
+    //Returns RecyclerView item count after checking if the result is null
     @Override
     public int getItemCount() {
         if (mMostPopularResult == null) return 0;
         else return mMostPopularResult.size();
     }
 
+    //setting item clickListener
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
@@ -55,27 +61,37 @@ public class RecyclerViewAdapterMostPopular
         void onItemClick(int position);
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder
+    //Creating ItemViewHolder class
+    public class ItemViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
         public Context mContext;
 
+        //RecyclerView UI components
         RelativeLayout mRelativeLayout;
         TextView mTextView;
         ImageView mImageView;
         TextView mDateTV;
         TextView mSummaryTV;
 
-        public ItemViewHolder(View itemView, final OnItemClickListener listener) {
+        public ItemViewHolder(View itemView) {
             super(itemView);
 
+            //Casting RecyclerView components to their respective views
+            mRelativeLayout = itemView.findViewById(R.id.item_layout);
+            mTextView = itemView.findViewById(R.id.item_title);
+            mImageView = itemView.findViewById(R.id.article_image);
+            mDateTV = itemView.findViewById(R.id.item_date);
+            mSummaryTV = itemView.findViewById(R.id.item_summary);
+
+            //Check if the listener is null and return position
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null) {
+                    if (mListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION)
-                            listener.onItemClick(position);
+                            mListener.onItemClick(position);
                     }
                 }
             });
@@ -83,12 +99,7 @@ public class RecyclerViewAdapterMostPopular
 
         public void updateMostPopularUI(MostPopular.Result result, RequestManager glide) {
 
-            mRelativeLayout = mRelativeLayout.findViewById(R.id.item_layout);
-            mTextView = mTextView.findViewById(R.id.item_title);
-            mImageView = mImageView.findViewById(R.id.article_image);
-            mDateTV = mDateTV.findViewById(R.id.item_date);
-            mSummaryTV = mSummaryTV.findViewById(R.id.item_summary);
-
+            //Updates texts and media of the the RecyclerView items using getters and Glide for media
             this.mTextView.setText(result.getSection());
             this.mDateTV.setText(result.getPublishedDate());
             this.mSummaryTV.setText(result.getTitle());
@@ -102,7 +113,7 @@ public class RecyclerViewAdapterMostPopular
 
         @Override
         public void onClick(View v) {
-            //Do nothing
+            //Do nothing; empty constructor
         }
     }
 }

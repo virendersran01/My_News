@@ -19,9 +19,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.my_news.R;
-import com.example.my_news.adapter.ViewPagerAdapter;
+import com.example.my_news.adapters.ViewPagerAdapter;
 import com.example.my_news.utils.Utils;
 
+import static com.example.my_news.fragments.TopStoriesFragment.ITEM_POSITION;
+
+//MainActivity: the main page of the app opened when app is started - introduces layout
+//and core functionality and displays unfiltered news articles for the user
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -50,8 +54,8 @@ public class MainActivity extends AppCompatActivity
     private boolean loadHomeFragOnBackPressed = true;
     private Handler mHandler;
 
-    private Utils mUtils = new Utils();
-    private DrawerLayout mDrawerLayout = findViewById(R.id.drawer_layout);
+    private Utils mUtils;
+    private DrawerLayout mDrawerLayout;
 
     public MainActivity() {
     }
@@ -60,8 +64,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mUtils = new Utils();
 
-        //Setup primary UI elements and drawer/functionality
+        //Setup primary UI elements and
+        // drawer/functionality during onCreate
         setupToolbar();
         setupViewPagerAndTabs();
         setupDrawerLayout();
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //Corresponding functionality of menu items; launches intents or routes user to the searchArticles / Notifictions activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -85,8 +93,9 @@ public class MainActivity extends AppCompatActivity
                 launchSearchArticlesActivity();
                 return true;
             case R.id.param_about:
-                mUtils.openActivityInWebView("https://openclassrooms.com",
-                        this, WebViewActivity.class);
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(ITEM_POSITION, "https://openclassrooms.com");
+                startActivity(intent);
                 return true;
             case R.id.param_help:
                 mUtils.openActivityInWebView("https://www.google.com",
@@ -97,23 +106,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //This method is called when a user selects the magnifying glass icon in the toolbar;
+    // it launches an intent to open the SearchArticles activity
     private void launchSearchArticlesActivity() {
         Intent intent = new Intent(MainActivity.this,
                 SearchArticlesActivity.class);
         this.startActivity(intent);
     }
 
+    //This method is called when a user selects the Notifications item in the menu dropdown;
+    // it launches an intent to open the Notifications activity
     private void launchNotificationsActivity() {
         Intent intent = new Intent(MainActivity.this,
                 NotificationsActivity.class);
         this.startActivity(intent);
     }
 
+    //This method sets the xml toolbar defined in the corresponding activity by initializing its corresponding ID
     private void setupToolbar() {
         this.toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
+    //Initiates the ViewPager feature; creates and sets the adapter and fills it with the desired tabs
     private void setupViewPagerAndTabs() {
         viewPager = findViewById(R.id.viewpager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(this,
@@ -124,6 +139,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    // Initiates the DrawerLayout displayed in the application and enables toggling of it to
+    // be able to open and close seamlessly
     private void setupDrawerLayout() {
         this.drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -133,6 +150,8 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
     }
 
+    //This method detects which NavDrawer item has been selected using a switch statement and carries
+    // out the respective intent or WebView launch
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -157,11 +176,11 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.nav_help:
-                mUtils.openActivityInWebView("https://openclassrooms.com",
+                mUtils.openActivityInWebView("https://www.google.com",
                         this, WebViewActivity.class);
                 break;
             case R.id.nav_about:
-                mUtils.openActivityInWebView("https://www.google.com",
+                mUtils.openActivityInWebView("https://openclassrooms.com",
                         this, WebViewActivity.class);
                 break;
             default:
@@ -173,6 +192,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //Launches an intent to display articles related to the selected drawer item
+    private void launchDrawerItemIntent(String selected) {
+
+    }
+
+    //Initiates the NavigationView layout, checks that
+    // it is not null and sets a listener for item clicks
     private void setupNavigationView() {
         this.navigationView = findViewById(R.id.nav_view);
         assert navigationView != null;

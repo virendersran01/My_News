@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+//SearchArticle: this class lays out and serializes the results of the Retrofit call to the NYT Search Articles api
 public class SearchArticle {
 
     @SerializedName("status")

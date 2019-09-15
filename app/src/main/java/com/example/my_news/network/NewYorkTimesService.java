@@ -11,6 +11,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+//NewYorkTimesService: this class lays out the Retrofit interface and the structure of the calls to be made
+//by it to the NYT website/api
 public interface NewYorkTimesService {
 
     String baseUrl = "https://api.nytimes.com/svc/";
@@ -27,7 +29,7 @@ public interface NewYorkTimesService {
 
     //Most Popular Fragment
     @GET("mostpopular/v2/viewed/{period}.json")
-    Call<MostPopular> callMostPopularApi(@Path("period") String PERIOD, @Query("api-key") String API_KEY);
+    Call<MostPopular> callMostPopularApi(@Path("period") int PERIOD, @Query("api-key") String API_KEY);
 
     @GET("search/vs/articlesearch.json?" + SearchArticleFl + "&page=1&sort=newest")
     Call<SearchArticle> callArticleSearchApi(@Query("q") String QUERY,

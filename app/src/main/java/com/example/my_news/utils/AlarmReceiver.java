@@ -14,10 +14,10 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.my_news.R;
 import com.example.my_news.activities.WebViewActivity;
-import com.example.my_news.network.NewYorkTimesService;
 
 import static com.example.my_news.fragments.TopStoriesFragment.ITEM_POSITION;
 
+//AlarmReceiver: this class loads shared preferences data and builds the notification feature when called
 public class AlarmReceiver extends BroadcastReceiver {
 
     private Utils mUtils = new Utils();
@@ -29,9 +29,11 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         arrays = mStoredData.loadSharedPrefs(context).split(",");
-        executeNotificationHttpRequest(context);
+//        executeNotificationHttpRequest(context);
     }
 
+    //NotificationBuilder: this feature constructs the notification that'll be sent to the user whenever
+    //they activate notification alerts in the SearchArticle activity
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void sendNotification(Context context) {
 
@@ -67,13 +69,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             mNotificationManager.createNotificationChannel(mChannel);
         }
 
+        //Assert not null and build notification manager
         assert mNotificationManager != null;
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
     //Http request method: takes a model object as a parameter and uses it to display the correct result
-    private void executeNotificationHttpRequest(final Context context) {
-
-        NewYorkTimesService.
-    }
+//    private void executeNotificationHttpRequest(final Context context) {
+//
+//        NewYorkTimesService.SearchArticleFl(
+//    }
 }
