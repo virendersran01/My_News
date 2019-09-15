@@ -10,10 +10,6 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-                   - save_cache:
-                       paths:
-                         - ~/.gradle
-                       key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
                    - run:
                        name: Run UnitTest
                        command: ./gradlew testDemoDebugUnitTest
