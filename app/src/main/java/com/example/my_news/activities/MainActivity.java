@@ -12,15 +12,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.my_news.R;
 import com.example.my_news.adapters.ViewPagerAdapter;
+import com.example.my_news.model.SearchArticle;
+import com.example.my_news.model.TopStories;
+import com.example.my_news.network.NewYorkTimesService;
 import com.example.my_news.utils.Utils;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.my_news.fragments.TopStoriesFragment.ITEM_POSITION;
 
@@ -29,10 +40,13 @@ import static com.example.my_news.fragments.TopStoriesFragment.ITEM_POSITION;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String apiKey = "pcRd7UBXGzyAG2aLj6raTyLe6yJJIZF9";
+
     private Toolbar toolbar;
     private ViewPager viewPager;
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private DrawerLayout mDrawerLayout;
 
     private View navHeader;
     private ImageView imgNavHeaderBg, imgNavHeader;
@@ -42,20 +56,16 @@ public class MainActivity extends AppCompatActivity
     public static final String urlNavHeaderBg = "";
     public static final String urlNavHeaderImg = "";
 
-    //tags used to attach the needed fragments
-    public static final String TAG_HOME = "home";
-    public static final String TAG_MOST_POPLAR = "most popular";
-    public static final String TAG_TOP_STORIES = "top stories";
-
-    //toolbar titles respective to selected nav item
-    private String[] activityTitles;
-
-    //flag to load home fragment when user presses back key
-    private boolean loadHomeFragOnBackPressed = true;
-    private Handler mHandler;
+    //Fixed string elements of the navigation bar search articles api call
+    private NewYorkTimesService mNYTService =
+            NewYorkTimesService.retrofit.create(NewYorkTimesService.class);
+    private ArrayList<SearchArticle.Docs> mSearchArticlesArray;
+    private String TAG_SEARCH;
+    private String FQ;
+    private String BEGIN_DATE = "20190101";
+    private String END_DATE = "20190101";
 
     private Utils mUtils;
-    private DrawerLayout mDrawerLayout;
 
     public MainActivity() {
     }
@@ -65,6 +75,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDrawerLayout = findViewById(R.id.drawer_layout);
+        mSearchArticlesArray = new ArrayList<>();
         mUtils = new Utils();
 
         //Setup primary UI elements and
@@ -88,22 +99,23 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.param_notifications:
                 launchNotificationsActivity();
-                return true;
+                break;
             case R.id.menu_activity_main_search:
                 launchSearchArticlesActivity();
-                return true;
+                break;
             case R.id.param_about:
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(ITEM_POSITION, "https://openclassrooms.com");
                 startActivity(intent);
-                return true;
+                break;
             case R.id.param_help:
                 mUtils.openActivityInWebView("https://www.google.com",
                         this, WebViewActivity.class);
-                return true;
+                break;
                 default:
                     return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     //This method is called when a user selects the magnifying glass icon in the toolbar;
@@ -158,22 +170,28 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_books:
-
+                TAG_SEARCH = "books";
+                launchDrawerItemIntent();
                 break;
             case R.id.nav_health:
-
+                TAG_SEARCH = "health";
+                launchDrawerItemIntent();
                 break;
             case R.id.nav_movies:
-
+                TAG_SEARCH = "movies";
+                launchDrawerItemIntent();
                 break;
             case R.id.nav_science:
-
+                TAG_SEARCH = "science";
+                launchDrawerItemIntent();
                 break;
             case R.id.nav_tech:
-
+                TAG_SEARCH = "technology";
+                launchDrawerItemIntent();
                 break;
             case R.id.nav_travel:
-
+                TAG_SEARCH = "travel";
+                launchDrawerItemIntent();
                 break;
             case R.id.nav_help:
                 mUtils.openActivityInWebView("https://www.google.com",
@@ -192,9 +210,36 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    //Launches an intent to display articles related to the selected drawer item
-    private void launchDrawerItemIntent(String selected) {
+    //Launches an intent to display articles related to the searched query
+    public void launchDrawerItemIntent() {
+        Call<SearchArticle> callSearchArticles = mNYTService.callArticleSearchApi(TAG_SEARCH, TAG_SEARCH, BEGIN_DATE, END_DATE,apiKey);
+        callSearchArticles.enqueue(new Callback<SearchArticle>() {
+            @Override
+            public void onResponse(Call<SearchArticle> call, Response<SearchArticle> response) {
+                SearchArticle searchArticle = response.body();
+                Log.d("Search Article Response", "onResponse: " + response);
+                mSearchArticlesArray.clear();
+                if (searchArticle != null) {
+                    mSearchArticlesArray.addAll(searchArticle.getResponse().getDocs());
+                    Log.d("Search Article Response", searchArticle.getResponse().toString());
 
+                    Intent intent = new Intent(getApplicationContext(), SearchArticleListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra("NavDrawer Query", mSearchArticlesArray);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Empty call response!",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            //Return toast message when call fails
+            @Override
+            public void onFailure(Call<SearchArticle> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error loading response!",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     //Initiates the NavigationView layout, checks that

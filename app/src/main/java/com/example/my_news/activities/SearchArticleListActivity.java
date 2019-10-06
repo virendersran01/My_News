@@ -23,7 +23,7 @@ import static com.example.my_news.activities.SearchArticlesActivity.SEARCH_ARTIC
 //database in the SearchArticlesActivity by providing a query term to filter responses
 public class SearchArticleListActivity extends AppCompatActivity {
 
-    public ArrayList<SearchArticle.Docs> mDocsArrayList = new ArrayList<>();
+    public ArrayList<SearchArticle.Docs> mDataValues = new ArrayList<>();
 
     //Views to be bound using Butterknife Api
     @BindView(R.id.frag_recycler_view)
@@ -47,6 +47,7 @@ public class SearchArticleListActivity extends AppCompatActivity {
 
         // ^^ using Butterknife Api to bind views; builds recyclerView
         // and calls the configureSwipeRefreshLayout method when activity is created
+        this.searchArticleHttpRequest();
         this.buildRecyclerView();
         this.configureSwipeRefreshLayout();
         configureToolbar();
@@ -64,7 +65,7 @@ public class SearchArticleListActivity extends AppCompatActivity {
     //Building the recyclerView and attributing the necessary elements to it
     private void buildRecyclerView() {
         this.mSearchAdapter = new RecyclerViewAdapterSearchArticle(
-                mDocsArrayList, Glide.with(this));
+                mDataValues, Glide.with(this));
         this.mRecyclerView.setHasFixedSize(true);
         this.mRecyclerView.setAdapter(mSearchAdapter);
         this.mRecyclerView.setLayoutManager(mLayoutManager);
@@ -78,32 +79,34 @@ public class SearchArticleListActivity extends AppCompatActivity {
         this.mSearchAdapter.setOnItemClickListener(new RecyclerViewAdapterSearchArticle.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                mUtils.openActivityInWebView(mDocsArrayList.get(position).getWebUrl(),
+                mUtils.openActivityInWebView(mDataValues.get(position).getWebUrl(),
                         SearchArticleListActivity.this, WebViewActivity.class);
             }
         });
     }
 
-    //Passes the search query term via  string arry and uses that criteria to pull
+    //Passes the search query term via string array and uses that criteria to pull
     //up the relevant search results
     private void searchArticleHttpRequest() {
-        String [] mDataValues = getIntent().getStringArrayExtra(SEARCH_ARTICLE_VALUES);
+        ArrayList mDataValues = getIntent().getStringArrayListExtra(SEARCH_ARTICLE_VALUES);
     }
+
+
 
     //Functionality for swipeRefreshLayout to be enacted on the activity's RV
     private void configureSwipeRefreshLayout() {
         this.mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                execute SearchArticleHttpRequest();
+                searchArticleHttpRequest();
             }
         });
     }
 
     //Refreshes search items and refills with any updates; notifies the current data set
     private void updateSearchArticleUI(SearchArticle searchArticle) {
-        this.mDocsArrayList.clear();
-        this.mDocsArrayList.addAll(searchArticle.getResponse().getDocs());
+        this.mDataValues.clear();
+        this.mDataValues.addAll(searchArticle.getResponse().getDocs());
         this.mSearchAdapter.notifyDataSetChanged();
     }
 }

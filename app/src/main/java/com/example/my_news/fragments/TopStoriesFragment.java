@@ -42,7 +42,6 @@ public class TopStoriesFragment extends Fragment {
     public ArrayList<TopStories.Result> mTopStoriesArray;
 
     private Utils mUtils = new Utils();
-    private TopStories mTopStories = new TopStories();
     private NewYorkTimesService newYorkTimesService =
             NewYorkTimesService.retrofit.create(NewYorkTimesService.class);
 
@@ -91,7 +90,6 @@ public class TopStoriesFragment extends Fragment {
         mTopStoriesArray = new ArrayList<>();
         buildRecyclerView();
         executeHttpRequestWithRetrofit();
-        //build SwipeRefreshLayout
         return rootView;
     }
 
@@ -134,22 +132,16 @@ public class TopStoriesFragment extends Fragment {
                 if (topStories != null) {
                     mTopStoriesArray.addAll(topStories.getResults());
                     mAdapter.notifyDataSetChanged();
-                    Log.d("HA", topStories.getResults().toString());
+                    Log.d("Top Stories call result", topStories.getResults().toString());
                 }
             }
 
             //Return toast message when call fails
             @Override
             public void onFailure(Call<TopStories> call, Throwable t) {
-                Toast.makeText(getContext(), "Error loading reponse!",
+                Toast.makeText(getContext(), "Error loading response!",
                         Toast.LENGTH_LONG).show();
             }
         });
     }
-
-//    private void updateUITopStories() {
-//        this.mTopStoriesArray.clear();
-//        this.mTopStoriesArray.addAll(mTopStories.getResults());
-//        this.mAdapter.notifyDataSetChanged();
-//    }
 }

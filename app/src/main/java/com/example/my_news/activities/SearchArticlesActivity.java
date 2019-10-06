@@ -1,29 +1,39 @@
 package com.example.my_news.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.my_news.R;
+import com.example.my_news.model.SearchArticle;
+import com.example.my_news.utils.AlarmReceiver;
 import com.example.my_news.utils.SearchDate;
 import com.example.my_news.utils.Utils;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.internal.Util;
 
 //SearchArticlesActivity: displays checkboxes and an EditText to the user to search articles of a specific topic
 //or identify categories of their liking with checkboxes to receive custom notifications
-public class SearchArticlesActivity extends AppCompatActivity
-        implements View.OnClickListener {
+public class SearchArticlesActivity extends AppCompatActivity {
 
     public final String[] CHECKBOX_VALUES = {"Books", "Health", "Movies", "Science",
             "Technology", "Travel"};
@@ -68,9 +78,23 @@ public class SearchArticlesActivity extends AppCompatActivity
 
         //Configures core UI and functionality of the activity
         //during onCreate
-        this.mSearchButton.setOnClickListener(this);
+        this.mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mUtils.queryInputIsEmpty(mSearchQuery, hintLabel,
+                        getResources().getString(R.string.query_error));
+                //One box, at minimum must be checked
+                if (mUtils.onUncheckedBoxes(mCheckboxes))
+                    Toast.makeText(SearchArticlesActivity.this,
+                            R.string.box_unchecked, Toast.LENGTH_LONG).show();
+                if (!(mSearchQuery.getText().toString().isEmpty())
+                        && !(mUtils.onUncheckedBoxes(mCheckboxes))) {
+                    configureActivity();
+                }
+            }
+        });
         this.configureToolbar();
-        this.configureActivity();
+        configureAlarmReceiver();
         this.setSearchDate();
     }
 
@@ -103,8 +127,19 @@ public class SearchArticlesActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void configureAlarmReceiver(Intent intent) {
-        //TODO: pass string array extra to AlarmReceiver
+    private void configureAlarmReceiver() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Date date = new Date();
+
+        Intent broadcast_intent = new Intent(this, AlarmReceiver.class);
+        broadcast_intent.putExtra("alarmConfig", CHECKBOX_VALUES);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this, 0 , broadcast_intent, 0);
+
+        long triggerAtTime = date.getTime();
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtTime, pendingIntent);
     }
 
     //Detects whether or not a checkbox is clicked when the user interacts with it and
@@ -158,19 +193,13 @@ public class SearchArticlesActivity extends AppCompatActivity
         }
     }
 
-    //onClick for search button; will not allow search to go through without criteria
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    public void onClick(View v) {
-        mUtils.queryInputIsEmpty(mSearchQuery, hintLabel,
-                getResources().getString(R.string.query_error));
-        //One box, at minimum must be checked
-        if (mUtils.onUncheckedBoxes(mCheckboxes))
-            mUtils.snackbarMessage(findViewById(R.id.activity_search_article),
-                    R.string.box_unchecked);
-        if (!(mSearchQuery.getText().toString().isEmpty())
-        && !(mUtils.onUncheckedBoxes(mCheckboxes))) {
-            configureActivity();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

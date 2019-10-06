@@ -77,11 +77,12 @@ public class RecyclerViewAdapterTopStories
         public ItemViewHolder(View itemView) {
             super(itemView);
 
-            mRelativeLayout = mRelativeLayout.findViewById(R.id.item_layout);
-            mTextView = mTextView.findViewById(R.id.item_title);
-            mImageView = mImageView.findViewById(R.id.article_image);
-            mDateTV = mDateTV.findViewById(R.id.item_date);
-            mSummaryTV = mSummaryTV.findViewById(R.id.item_summary);
+            //Casting RecyclerView components to their respective views
+            mRelativeLayout = itemView.findViewById(R.id.item_layout);
+            mTextView = itemView.findViewById(R.id.item_title);
+            mImageView = itemView.findViewById(R.id.article_image);
+            mDateTV = itemView.findViewById(R.id.item_date);
+            mSummaryTV = itemView.findViewById(R.id.item_summary);
 
             //Check if the listener is null and return position
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +101,7 @@ public class RecyclerViewAdapterTopStories
 
             //Updates texts and media of the the RecyclerView items using getters and Glide for media
             this.mTextView.setText(result.getSection());
-            this.mDateTV.setText(result.getPublishedDate());
+            this.mDateTV.setText(result.getPublishedDate().substring(0, 10));
             this.mSummaryTV.setText(result.getTitle());
             if ((result.getMultimedia() != null) &&
                     (!result.getMultimedia().isEmpty())) {

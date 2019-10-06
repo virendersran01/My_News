@@ -12,7 +12,7 @@ public class MyNewsUnitTests {
 
     //Date Formatting and Retrieval Testing//
     @Test
-    public void checkEndDate() throws Exception {
+    public void checkEndDate() {
         Utils formatter = new Utils();
 
         Assert.assertEquals("19980708", formatter.getEndDate("08/07/1998"));
@@ -20,7 +20,7 @@ public class MyNewsUnitTests {
     }
 
     @Test
-    public void checkBeginDate() throws Exception {
+    public void checkBeginDate() {
         Utils formatter = new Utils();
 
         Assert.assertEquals("20190817", formatter.getEndDate("17/08/2019"));
@@ -29,7 +29,7 @@ public class MyNewsUnitTests {
     }
 
     @Test
-    public void getItemArticleFormattedDate() throws Exception {
+    public void getItemArticleFormattedDate() {
         Utils utils = new Utils();
 
         Assert.assertEquals(utils.getArticleItemFormattedDate(
@@ -37,7 +37,7 @@ public class MyNewsUnitTests {
     }
 
     @Test
-    public void formatCalendar() throws Exception {
+    public void formatCalendar() {
         Utils utils = new Utils();
 
         Calendar calendar = Calendar.getInstance();
@@ -52,7 +52,7 @@ public class MyNewsUnitTests {
 
     //Checkbox Functionality Testing//
     @Test
-    public void getNewDesk() throws Exception {
+    public void getNewDesk() {
         Utils utils = new Utils();
 
         String[] empty = {"", "", ""};
@@ -67,7 +67,7 @@ public class MyNewsUnitTests {
     }
 
     @Test
-    public void testNewDeskMethod() throws Exception {
+    public void testNewDeskMethod() {
         Utils utils = new Utils();
         String[] error = new String[6];
         error[0] = "Culture";

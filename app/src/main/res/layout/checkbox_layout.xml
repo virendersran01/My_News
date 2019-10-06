@@ -18,7 +18,7 @@
             android:id="@+id/checkbox_1"
             style="@style/checkBoxStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:button="@drawable/customcheckbox"
             android:checked="true"
             android:onClick="onCheckboxClicked"
@@ -28,7 +28,7 @@
             android:id="@+id/checkbox_2"
             style="@style/checkBoxStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:button="@drawable/customcheckbox"
             android:onClick="onCheckboxClicked"
             android:text="@string/checkbox2" />
@@ -37,7 +37,7 @@
             android:id="@+id/checkbox_3"
             style="@style/checkBoxStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:button="@drawable/customcheckbox"
             android:onClick="onCheckboxClicked"
             android:text="@string/checkbox3" />
@@ -54,7 +54,7 @@
             android:id="@+id/checkbox_4"
             style="@style/checkBoxStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:button="@drawable/customcheckbox"
             android:onClick="onCheckboxClicked"
             android:text="@string/checkbox4" />
@@ -63,7 +63,7 @@
             android:id="@+id/checkbox_5"
             style="@style/checkBoxStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:button="@drawable/customcheckbox"
             android:onClick="onCheckboxClicked"
             android:text="@string/checkbox5" />
@@ -72,7 +72,7 @@
             android:id="@+id/checkbox_6"
             style="@style/checkBoxStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:button="@drawable/customcheckbox"
             android:onClick="onCheckboxClicked"
             android:text="@string/checkbox6" />

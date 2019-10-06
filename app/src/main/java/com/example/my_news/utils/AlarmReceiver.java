@@ -52,7 +52,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         .setContentTitle(context.getString(R.string.app_name))
                         .setContentText(context.getString(R.string.text_notification))
                         .setSubText(subTextUrl)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setPriority(Notification.PRIORITY_DEFAULT)
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setContentIntent(pendingIntent);
 

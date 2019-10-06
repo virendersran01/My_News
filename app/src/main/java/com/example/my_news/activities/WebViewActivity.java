@@ -2,9 +2,11 @@ package com.example.my_news.activities;
 
 import android.os.Bundle;
 
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -15,7 +17,6 @@ import static com.example.my_news.fragments.TopStoriesFragment.ITEM_POSITION;
 //or specific articles selected by the user
 public class WebViewActivity extends AppCompatActivity {
 
-    Toolbar mToolbar;
     WebView mWebView;
 
     @Override
@@ -25,17 +26,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         //Initiate the necessary components
         // of the activity layout when created
-        setupToolbar();
         WebViewReader();
-    }
-
-    //Instantiate instance of toolbar
-    private void setupToolbar() {
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     //Sets the respective WebView and provides it with a uri to load from the

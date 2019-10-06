@@ -34,10 +34,8 @@ public class MostPopularFragment extends Fragment {
 
     //New York Times api key
     String apiKey = "pcRd7UBXGzyAG2aLj6raTyLe6yJJIZF9";
-    String baseUrl = "https://api.nytimes.com/svc/";
 
     //Variables for storing and identifying articles in the MostPopular results array
-    public static final String ITEM_POSITION = "web_view_position";
     public static final String KEY_POSITION = "position";
     public ArrayList<MostPopular.Result> mMostPopularArray;
 
@@ -91,7 +89,6 @@ public class MostPopularFragment extends Fragment {
         mMostPopularArray = new ArrayList<>();
         buildRecyclerView();
         executeHttpRequestWithRetrofit();
-        //build SwipeRefreshLayout
         return rootView;
     }
 
@@ -129,7 +126,7 @@ public class MostPopularFragment extends Fragment {
             @Override
             public void onResponse(Call<MostPopular> call, Response<MostPopular> response) {
                 MostPopular mostPopular = response.body();
-                Log.d("AF", response.raw().toString());
+                Log.d("Response", response.raw().toString());
                 mMostPopularArray.clear();
                 if (mostPopular != null) {
                     mMostPopularArray.addAll(mostPopular.getResults());
@@ -145,10 +142,4 @@ public class MostPopularFragment extends Fragment {
             }
         });
     }
-
-//    private void updateUiMostPopular() {
-//        this.mMostPopularArray.clear();
-//        this.mMostPopularArray.addAll(mMostPopular.getResults());
-//        this.mAdapter.notifyDataSetChanged();
-//    }
 }

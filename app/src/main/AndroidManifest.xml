@@ -13,11 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.WebViewActivity"></activity>
-        <activity android:name=".activities.SearchArticlesActivity" />
-        <activity android:name=".activities.SearchArticleListActivity" />
-        <activity android:name=".activities.NotificationsActivity" />
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.WebViewActivity"
+            android:parentActivityName=".activities.MainActivity"/>
+        <activity android:name=".activities.SearchArticlesActivity"
+            android:parentActivityName=".activities.MainActivity"/>
+        <activity android:name=".activities.SearchArticleListActivity"
+            android:parentActivityName=".activities.MainActivity"/>
+        <activity android:name=".activities.NotificationsActivity"
+            android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".activities.MainActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -12,10 +12,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -115,6 +117,13 @@ public class NotificationsActivity extends AppCompatActivity {
         Intent alarmIntent = new Intent(context, AlarmReceiver.class);
         mPendingIntent = PendingIntent.getBroadcast(NotificationsActivity.this,
                 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
+
+        mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, mPendingIntent);
     }
 
     //Adding or removing an item from the checkbox string array each time an item in
@@ -263,7 +272,7 @@ public class NotificationsActivity extends AppCompatActivity {
                         .setSmallIcon(R.drawable.ic_logo)
                         .setContentTitle(getString(R.string.app_name))
                         .setContentText(getString(R.string.text_notification))
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setPriority(Notification.PRIORITY_DEFAULT)
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
@@ -298,5 +307,15 @@ public class NotificationsActivity extends AppCompatActivity {
         }
 
         mSharedPrefs.saveToSharedPrefs(this, sb.toString());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

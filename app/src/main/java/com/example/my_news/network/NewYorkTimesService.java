@@ -31,6 +31,7 @@ public interface NewYorkTimesService {
     @GET("mostpopular/v2/viewed/{period}.json")
     Call<MostPopular> callMostPopularApi(@Path("period") int PERIOD, @Query("api-key") String API_KEY);
 
+    //Call to SearchArticles api using query terms and filters
     @GET("search/vs/articlesearch.json?" + SearchArticleFl + "&page=1&sort=newest")
     Call<SearchArticle> callArticleSearchApi(@Query("q") String QUERY,
                                              @Query("fq") String FILTER,

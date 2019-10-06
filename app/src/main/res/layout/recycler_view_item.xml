@@ -55,11 +55,11 @@
             android:layout_toRightOf="@+id/article_image"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="no summary"
-            android:textColor="@color/cardview_shadow_end_color"
-            android:textSize="20sp"/>
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 </LinearLayout>
