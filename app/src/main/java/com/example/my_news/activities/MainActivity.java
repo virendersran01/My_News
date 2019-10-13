@@ -29,11 +29,13 @@ import com.example.my_news.network.NewYorkTimesService;
 import com.example.my_news.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.my_news.activities.SearchArticlesActivity.SEARCH_ARTICLE_VALUES;
 import static com.example.my_news.fragments.TopStoriesFragment.ITEM_POSITION;
 
 //MainActivity: the main page of the app opened when app is started - introduces layout
@@ -67,9 +69,6 @@ public class MainActivity extends AppCompatActivity
     private String END_DATE = "20190101";
 
     private Utils mUtils;
-
-    public MainActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,34 +212,15 @@ public class MainActivity extends AppCompatActivity
 
     //Launches an intent to display articles related to the searched query
     public void launchDrawerItemIntent() {
-        Call<SearchArticle> callSearchArticles = mNYTService.callArticleSearchApi(TAG_SEARCH, TAG_SEARCH, BEGIN_DATE, END_DATE,apiKey);
-        callSearchArticles.enqueue(new Callback<SearchArticle>() {
-            @Override
-            public void onResponse(Call<SearchArticle> call, Response<SearchArticle> response) {
-                SearchArticle searchArticle = response.body();
-                Log.d("Search Article Response", "onResponse: " + response);
-                mSearchArticlesArray.clear();
-                if (searchArticle != null) {
-                    mSearchArticlesArray.addAll(searchArticle.getResponse().getDocs());
-                    Log.d("Search Article Response", searchArticle.getResponse().toString());
+        ArrayList<String> value = new ArrayList<>(Arrays.asList(TAG_SEARCH,
+                null,
+                null,
+                null));
 
-                    Intent intent = new Intent(getApplicationContext(), SearchArticleListActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.putExtra("NavDrawer Query", mSearchArticlesArray);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Empty call response!",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-
-            //Return toast message when call fails
-            @Override
-            public void onFailure(Call<SearchArticle> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error loading response!",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+        Intent intent = new Intent(getBaseContext(), SearchArticleListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putStringArrayListExtra(SEARCH_ARTICLE_VALUES, value);
+        startActivity(intent);
     }
 
     //Initiates the NavigationView layout, checks that

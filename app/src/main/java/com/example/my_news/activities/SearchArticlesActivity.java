@@ -28,12 +28,10 @@ import butterknife.ButterKnife;
 //or identify categories of their liking with checkboxes to receive custom notifications
 public class SearchArticlesActivity extends AppCompatActivity {
 
-    public final String[] CHECKBOX_VALUES = {"Books", "Health", "Movies", "Science",
-            "Technology", "Travel"};
+    public ArrayList<String> checkboxValues = new ArrayList<>();
     public static final String SEARCH_ARTICLE_VALUES = "SEARCH_ARTICLE_VALUES";
 
     //Defining views to be bound using Butterknife Api
-    public String[] CHECKBOX_POSITION = new String[6];
     @BindView(R.id.query_text_input_layout)
     public TextInputLayout hintLabel;
     @BindView(R.id.search_query_term)
@@ -109,8 +107,13 @@ public class SearchArticlesActivity extends AppCompatActivity {
     //Provides the values specified by the checkboxes along with a begin / end date to the appropriate
     //string array and passes them as search criteria when called
     private void configureActivity() {
+        String[] checkedSections = new String[checkboxValues.size()];
+        for (int j = 0; j < checkboxValues.size(); j++) {
+            checkedSections[j] = checkboxValues.get(j);
+        }
+
         ArrayList<String> value = new ArrayList<>(Arrays.asList(mSearchQuery.getText().toString(),
-                mUtils.getNewDesk(CHECKBOX_VALUES),
+                mUtils.getNewDesk(checkedSections),
                 mUtils.getBeginDate(mBeginDate.getText().toString()),
                 mUtils.getEndDate(mEndDate.getText().toString())));
 
@@ -123,48 +126,47 @@ public class SearchArticlesActivity extends AppCompatActivity {
     //then toggles the corresponding position in its string array
     public void onCheckboxClicked(View view) {
         boolean isChecked = ((CheckBox) view).isChecked();
-        CHECKBOX_POSITION[0] = CHECKBOX_VALUES[0];
         switch (view.getId()) {
             case R.id.checkbox_1:
                 if (isChecked) {
-                    CHECKBOX_POSITION[0] = CHECKBOX_VALUES[0];
+                    checkboxValues.add("Books");
                 } else {
-                    CHECKBOX_VALUES[0] = "";
+                    checkboxValues.remove("Books");
                 }
                 break;
             case R.id.checkbox_2:
                 if (isChecked) {
-                    CHECKBOX_POSITION[1] = CHECKBOX_VALUES[1];
+                    checkboxValues.add("Health");
                 } else {
-                    CHECKBOX_VALUES[1] = "";
+                    checkboxValues.remove("Health");
                 }
                 break;
             case R.id.checkbox_3:
                 if (isChecked) {
-                    CHECKBOX_POSITION[2] = CHECKBOX_VALUES[2];
+                    checkboxValues.add("Movies");
                 } else {
-                    CHECKBOX_VALUES[2] = "";
+                    checkboxValues.remove("Movies");
                 }
                 break;
             case R.id.checkbox_4:
                 if (isChecked) {
-                    CHECKBOX_POSITION[3] = CHECKBOX_VALUES[3];
+                    checkboxValues.add("Science");
                 } else {
-                    CHECKBOX_VALUES[3] = "";
+                    checkboxValues.remove("Science");
                 }
                 break;
             case R.id.checkbox_5:
                 if (isChecked) {
-                    CHECKBOX_POSITION[4] = CHECKBOX_VALUES[4];
+                    checkboxValues.add("Technology");
                 } else {
-                    CHECKBOX_VALUES[4] = "";
+                    checkboxValues.remove("Technology");
                 }
                 break;
             case R.id.checkbox_6:
                 if (isChecked) {
-                    CHECKBOX_POSITION[5] = CHECKBOX_VALUES[5];
+                    checkboxValues.add("Travel");
                 } else {
-                    CHECKBOX_VALUES[5] = "";
+                    checkboxValues.remove("Travel");
                 }
                 break;
         }
