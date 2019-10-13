@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.my_news.R;
 import com.example.my_news.adapters.ViewPagerAdapter;
+import com.example.my_news.model.DocsItem;
 import com.example.my_news.model.SearchArticle;
 import com.example.my_news.model.TopStories;
 import com.example.my_news.network.NewYorkTimesService;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     //Fixed string elements of the navigation bar search articles api call
     private NewYorkTimesService mNYTService =
             NewYorkTimesService.retrofit.create(NewYorkTimesService.class);
-    private ArrayList<SearchArticle.Docs> mSearchArticlesArray;
+    private ArrayList<DocsItem> mSearchArticlesArray;
     private String TAG_SEARCH;
     private String FQ;
     private String BEGIN_DATE = "20190101";

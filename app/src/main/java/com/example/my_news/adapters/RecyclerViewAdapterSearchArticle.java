@@ -12,19 +12,21 @@ import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
 import com.example.my_news.R;
+import com.example.my_news.model.DocsItem;
 import com.example.my_news.model.SearchArticle;
 import java.util.ArrayList;
+import java.util.List;
 
 //RecyclerViewAdapterSearchArticles: respective RecyclerView adapter for the SearchArticle section and activity
 public class RecyclerViewAdapterSearchArticle
         extends RecyclerView.Adapter<RecyclerViewAdapterSearchArticle.ItemViewHolder> {
 
-    private ArrayList<SearchArticle.Docs> mList;
+    private ArrayList<DocsItem> mList;
     private OnItemClickListener mListener;
     private RequestManager mGlide;
 
     //Instantiating an empty list for the TopStories articles to be stored in
-    public RecyclerViewAdapterSearchArticle(ArrayList<SearchArticle.Docs> docsList, RequestManager glide) {
+    public RecyclerViewAdapterSearchArticle(ArrayList<DocsItem> docsList, RequestManager glide) {
         mList = docsList;
         mGlide = glide;
     }
@@ -54,6 +56,12 @@ public class RecyclerViewAdapterSearchArticle
     //setting item clickListener
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
+    }
+
+    public void updateArticles(List<DocsItem> searchDocs) {
+        mList.clear();
+        mList.addAll(searchDocs);
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {
@@ -98,7 +106,7 @@ public class RecyclerViewAdapterSearchArticle
             });
         }
 
-        public void updateSearchArticleUI(SearchArticle.Docs searchArticle, RequestManager glide) {
+        public void updateSearchArticleUI(DocsItem searchArticle, RequestManager glide) {
 
             //Updates texts and media of the the RecyclerView items using getters and Glide for media
             this.mTextView.setText(searchArticle.getNewsDesk());

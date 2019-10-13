@@ -32,7 +32,7 @@ public interface NewYorkTimesService {
     Call<MostPopular> callMostPopularApi(@Path("period") int PERIOD, @Query("api-key") String API_KEY);
 
     //Call to SearchArticles api using query terms and filters
-    @GET("search/vs/articlesearch.json?" + SearchArticleFl + "&page=1&sort=newest")
+    @GET("search/v2/articlesearch.json?" + SearchArticleFl + "&page=1&sort=newest")
     Call<SearchArticle> callArticleSearchApi(@Query("q") String QUERY,
                                              @Query("fq") String FILTER,
                                              @Query("begin_date") String BEGIN_DATE,

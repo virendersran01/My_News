@@ -53,8 +53,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight=".5"
-                android:drawableEnd="@drawable/ic_select"
-                android:drawableRight="@drawable/ic_select"
+                android:drawableEnd="@drawable/ic_arrow_drop_down_grey_800_24dp"
+                android:drawableRight="@drawable/ic_arrow_drop_down_grey_800_24dp"
                 android:focusable="true"
                 android:inputType="date"
                 android:textColorHint="@color/cardview_shadow_start_color" />
@@ -66,16 +66,15 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight=".5"
-                android:drawableEnd="@drawable/ic_select"
-                android:drawableRight="@drawable/ic_select"
+                android:drawableEnd="@drawable/ic_arrow_drop_down_grey_800_24dp"
+                android:drawableRight="@drawable/ic_arrow_drop_down_grey_800_24dp"
                 android:focusable="true"
                 android:inputType="date"
                 android:textColorHint="@color/cardview_shadow_start_color" />
         </LinearLayout>
 
         <include
-            layout="@layout/checkbox_layout"
-            android:layout_height="190dp" />
+            layout="@layout/checkbox_layout" />
 
         <Button
             android:id="@+id/search_activity_search_button"

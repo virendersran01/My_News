@@ -1,11 +1,7 @@
 package com.example.my_news.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -19,17 +15,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.my_news.R;
-import com.example.my_news.model.SearchArticle;
-import com.example.my_news.utils.AlarmReceiver;
 import com.example.my_news.utils.SearchDate;
 import com.example.my_news.utils.Utils;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.internal.Util;
 
 //SearchArticlesActivity: displays checkboxes and an EditText to the user to search articles of a specific topic
 //or identify categories of their liking with checkboxes to receive custom notifications
@@ -94,7 +87,6 @@ public class SearchArticlesActivity extends AppCompatActivity {
             }
         });
         this.configureToolbar();
-        configureAlarmReceiver();
         this.setSearchDate();
     }
 
@@ -117,29 +109,14 @@ public class SearchArticlesActivity extends AppCompatActivity {
     //Provides the values specified by the checkboxes along with a begin / end date to the appropriate
     //string array and passes them as search criteria when called
     private void configureActivity() {
-        String[] value = {mSearchQuery.getText().toString(),
+        ArrayList<String> value = new ArrayList<>(Arrays.asList(mSearchQuery.getText().toString(),
                 mUtils.getNewDesk(CHECKBOX_VALUES),
                 mUtils.getBeginDate(mBeginDate.getText().toString()),
-                mUtils.getEndDate(mEndDate.getText().toString())};
+                mUtils.getEndDate(mEndDate.getText().toString())));
 
         Intent intent = new Intent(getBaseContext(), SearchArticleListActivity.class);
-        intent.putExtra(SEARCH_ARTICLE_VALUES, value);
+        intent.putStringArrayListExtra(SEARCH_ARTICLE_VALUES, value);
         startActivity(intent);
-    }
-
-    private void configureAlarmReceiver() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Date date = new Date();
-
-        Intent broadcast_intent = new Intent(this, AlarmReceiver.class);
-        broadcast_intent.putExtra("alarmConfig", CHECKBOX_VALUES);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this, 0 , broadcast_intent, 0);
-
-        long triggerAtTime = date.getTime();
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtTime, pendingIntent);
     }
 
     //Detects whether or not a checkbox is clicked when the user interacts with it and
