@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
@@ -85,21 +86,20 @@ public class NotificationsActivity extends AppCompatActivity {
         //Initiate UI components (Toolbar) and core
         // functionality of the activity when created
         configureToolbar();
-        configureAlarmManager(this);
-        this.switchButton();
+        switchButton();
 
-        if (TEST_MODE) {
-            mButton.setVisibility(View.VISIBLE);
-
-            mButton.setOnClickListener(new View.OnClickListener() {
-
-                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                @Override
-                public void onClick(View v) {
-                    sendTestNotification();
-                }
-            });
-        }
+//        if (TEST_MODE) {
+//            mButton.setVisibility(View.VISIBLE);
+//
+//            mButton.setOnClickListener(new View.OnClickListener() {
+//
+//                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//                @Override
+//                public void onClick(View v) {
+//                    sendTestNotification();
+//                }
+//            });
+//        }
     }
 
     //Configures toolbar just as the rest of the classes do
@@ -122,6 +122,7 @@ public class NotificationsActivity extends AppCompatActivity {
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 14);
 
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, mPendingIntent);
     }
@@ -306,6 +307,7 @@ public class NotificationsActivity extends AppCompatActivity {
             sb.append(eachValue).append(",");
         }
 
+        mSharedPrefs = new SharedPreferencesData();
         mSharedPrefs.saveToSharedPrefs(this, sb.toString());
     }
 
